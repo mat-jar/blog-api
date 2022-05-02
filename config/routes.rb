@@ -4,7 +4,7 @@ Rails.application.routes.draw do
                  sessions: 'users/sessions',
                  registrations: 'users/registrations'
              }
-  get '/member-data', to: 'members#show'
+  get 'api/v1/users/user_details', to: 'user_details#show'
   scope '/api/v1' do
     resources :articles
   end

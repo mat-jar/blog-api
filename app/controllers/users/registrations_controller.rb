@@ -4,6 +4,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def respond_with(resource, _opts = {})
+    #render json: { message: resource.to_s }
+    #render json: { message: resource.persisted?.to_s }
     resource.persisted? ? register_success : register_failed
   end
 
@@ -13,5 +15,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def register_failed
     render json: { message: "Signed up failure." }
+
   end
 end

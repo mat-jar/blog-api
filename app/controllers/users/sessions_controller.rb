@@ -1,9 +1,14 @@
 class Users::SessionsController < Devise::SessionsController
+  include Devise::Controllers::Helpers
   respond_to :json
 
-  private
+
+private
+
   def respond_with(resource, _opts = {})
-    render json: { message: 'Logged.' }, status: :ok
+
+    response.set_header('Hej', 'Mati')
+    render json: {message: 'Logged.'}, status: :ok
   end
 
   def respond_to_on_destroy
