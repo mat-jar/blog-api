@@ -23,16 +23,16 @@ default: &default
 
 development:
   <<: *default
-  database: blog-api_development
-  username: blog-api
-  password: blog-api
+  database: flashcards_api_development
+  username: flashcards_api
+  password: flashcards_api
   host: localhost
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: blog_api
+  #username: flashcards_api
 
   # The password associated with the postgres role (username).
   #password:
@@ -60,9 +60,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: blog-api_test
-  username: blog-api
-  password: blog-api
+  database: flashcards_api_test
+  username: flashcards_api
+  password: flashcards_api
   host: localhost
 
 
@@ -88,6 +88,6 @@ test:
 #
 production:
   <<: *default
-  database: blog_api_production
-  username: blog_api
-  password: <%= ENV["BLOG_API_DATABASE_PASSWORD"] %>
+  database: flashcards_api_production
+  username: flashcards_api
+  password: <%= ENV["FLASHCARDS_API_DATABASE_PASSWORD"] %>
