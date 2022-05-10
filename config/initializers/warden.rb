@@ -1,3 +1,4 @@
+=begin
 Warden::JWTAuth::Middleware::TokenDispatcher.class_eval do
   ENV_KEY = 'warden-jwt_auth.token_dispatcher'
     def call(env)
@@ -9,3 +10,4 @@ Warden::JWTAuth::Middleware::TokenDispatcher.class_eval do
           [status, headers, response]
     end
 end
+=end

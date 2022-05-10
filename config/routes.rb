@@ -8,6 +8,14 @@ Rails.application.routes.draw do
   scope '/api/v1' do
     resources :articles
   end
+
+  namespace :api do
+      namespace :v1 do
+        resources :flashcard_sets do
+          resources :flashcards
+        end
+      end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

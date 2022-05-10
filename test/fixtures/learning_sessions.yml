@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  flashcard_set: one
+
+two:
+  user: two
+  flashcard_set: two
