@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_08_104640) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_10_095637) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "answer_times", force: :cascade do |t|
+    t.bigint "learning_session_id", null: false
+    t.bigint "flashcard_id", null: false
+    t.integer "round"
+    t.integer "time_millisecond"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flashcard_id"], name: "index_answer_times_on_flashcard_id"
+    t.index ["learning_session_id"], name: "index_answer_times_on_learning_session_id"
+  end
 
   create_table "articles", force: :cascade do |t|
     t.string "title"
@@ -89,10 +100,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_104640) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 0
     t.string "name"
+    t.bigint "teacher_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["teacher_id"], name: "index_users_on_teacher_id"
   end
 
+  add_foreign_key "answer_times", "flashcards"
+  add_foreign_key "answer_times", "learning_sessions"
   add_foreign_key "flashcard_set_settings_panels", "flashcard_sets"
   add_foreign_key "flashcard_set_settings_panels", "flashcards", column: "resume_flashcard_id"
   add_foreign_key "flashcard_set_settings_panels", "users"
@@ -100,4 +115,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_08_104640) do
   add_foreign_key "flashcards", "flashcard_sets"
   add_foreign_key "learning_sessions", "flashcard_sets"
   add_foreign_key "learning_sessions", "users"
+  add_foreign_key "users", "users", column: "teacher_id"
 end

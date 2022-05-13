@@ -1,5 +1,6 @@
 class Api::V1::FlashcardSetsController < ApplicationController
   before_action :set_flashcard_set
+  before_action :authenticate_user!, except: [:index, :show]
   #before_action :set_flashcard_set, only: [:index, :show, :edit, :update, :destroy]
     # GET /flashcard_sets
     # GET /flashcard_sets.json
@@ -30,7 +31,9 @@ class Api::V1::FlashcardSetsController < ApplicationController
     # POST /flashcard_sets
     # POST /flashcard_sets.json
     def create
+      @flashcard_set = FlashcardSet.create(flashcard_set_params)
       @flashcard_set.user = current_user
+
 
 
       if @flashcard_set.save

@@ -11,6 +11,16 @@ Rails.application.routes.draw do
 
   namespace :api do
       namespace :v1 do
+        resources :learning_sessions do
+          post 'show_specific', on: :collection
+          # on: :collection  zamienia /api/v1/learning_sessions/:id/show_specific(.:format)  na /api/v1/learning_sessions/show_specific(.:format)
+        end
+      end
+    end
+
+
+  namespace :api do
+      namespace :v1 do
         resources :flashcard_sets do
           resources :flashcards
         end
