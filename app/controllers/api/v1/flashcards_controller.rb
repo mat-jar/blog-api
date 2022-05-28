@@ -14,11 +14,11 @@ class Api::V1::FlashcardsController < ApplicationController
 
   def create
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
-    @flashcard = @flashcard_set.flashcards.create(flashcard_params)
+    @flashcard = @flashcard_set.flashcards.new(flashcard_params)
     if @flashcard.save
       render json: @flashcard
     else
-      render json: @flashcard.errors
+      render json: @flashcard.errors, status: :unprocessable_entity
     end
   end
 

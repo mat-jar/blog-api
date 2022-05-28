@@ -9,6 +9,10 @@ Article.create(title: "Schedule", body: "meetings: IT, Accounts, HR")
 Article.create(title: "Visit", body: "children's home: perform duties")
 #FlashcardSet.create(title: "Animals", description: "A1 animals for kids", category: "A1", user: User.find(1))
 
+User.create(email: "test@example.com", password: "test@example.com")
+User.create(email: "test1@example.com", password: "test1@example.com")
+User.create(email: "test2@example.com", password: "test2@example.com")
+
 
 FlashcardSet.create(title: "Animals", description: "A1 animals for kids", category: "A1", user: User.find(1),
   flashcards_attributes: [

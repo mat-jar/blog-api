@@ -1,10 +1,11 @@
 class Api::V1::LearningSessionsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @learning_sessions = LearningSession.where("user_id = ?", current_user)
 
     render json: @learning_sessions
-    
+
     #render json: { message: current_user}
     #render json: { message: "index"}
   end
@@ -31,7 +32,7 @@ class Api::V1::LearningSessionsController < ApplicationController
   end
 
   def create
-    @learning_session = LearningSession.create(learning_session_param)
+    @learning_session = LearningSession.new(learning_session_param)
     @learning_session.user = current_user
 
     if @learning_session.save

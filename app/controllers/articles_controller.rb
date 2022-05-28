@@ -6,13 +6,19 @@ class ArticlesController < ApplicationController
 
   def create
     article = Article.create(article_param)
-    render json: article
+
+    if article.save
+      render json: article, status: :ok
+    else
+      render json: article.errors, status: :unprocessable_entity
+    end
+
   end
 
   def update
     article = Article.find(params[:id])
     article.update(article_param)
-    render json: article
+    render json: article, status: :ok
   end
 
   def destroy

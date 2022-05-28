@@ -31,7 +31,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
     # POST /flashcard_sets
     # POST /flashcard_sets.json
     def create
-      @flashcard_set = FlashcardSet.create(flashcard_set_params)
+      @flashcard_set = FlashcardSet.new(flashcard_set_params)
       @flashcard_set.user = current_user
 
 
@@ -39,7 +39,8 @@ class Api::V1::FlashcardSetsController < ApplicationController
       if @flashcard_set.save
         render json: @flashcard_set
       else
-        render json: @flashcard_set.errors
+        render json: @flashcard_set.errors, status: :unprocessable_entity
+        
       end
     end
 

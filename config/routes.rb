@@ -22,9 +22,13 @@ Rails.application.routes.draw do
   namespace :api do
       namespace :v1 do
         resources :flashcard_sets do
-          resources :flashcards
+          resources :flashcards, shallow: true
         end
       end
+  end
+
+  authenticated do
+    root to: "secret#index", as: :authenticated_root
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
