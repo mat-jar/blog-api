@@ -1,5 +1,5 @@
 RSpec.shared_context "create_3_flashcard_sets", :shared_context => :metadata do
-  let!(:my_flashcard_sets) { FactoryBot.build_list(:flashcard_set) }
+  let!(:my_flashcard_sets) { FactoryBot.build_list(:flashcard_set, 3) }
 
   before do
     for my_flashcard_set in my_flashcard_sets do
@@ -10,4 +10,5 @@ RSpec.shared_context "create_3_flashcard_sets", :shared_context => :metadata do
                         category: my_flashcard_set.category
                       } }
   end
+end
 end

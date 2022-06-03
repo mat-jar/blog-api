@@ -1,6 +1,8 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_user!
   def index
-    articles = Article.order("created_at DESC")
+    #articles = Article.order("created_at DESC")
+    articles = Article.all
     render json: articles
   end
 

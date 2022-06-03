@@ -4,7 +4,9 @@ Rails.application.routes.draw do
                  sessions: 'users/sessions',
                  registrations: 'users/registrations'
              }
-  get 'api/v1/users/user_details', to: 'user_details#show'
+  get 'api/v1/users/user_details', to: 'users/user_details#show'
+  put 'api/v1/users/user_details', to: 'users/user_details#update'
+  get 'api/v1/users/user_details_all', to: 'users/user_details#show_all'
   scope '/api/v1' do
     resources :articles
   end

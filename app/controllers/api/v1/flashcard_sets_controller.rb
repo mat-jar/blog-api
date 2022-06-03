@@ -1,6 +1,7 @@
 class Api::V1::FlashcardSetsController < ApplicationController
   before_action :set_flashcard_set
-  before_action :authenticate_user!, except: [:index, :show]
+  #before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   #before_action :set_flashcard_set, only: [:index, :show, :edit, :update, :destroy]
     # GET /flashcard_sets
     # GET /flashcard_sets.json
@@ -40,7 +41,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
         render json: @flashcard_set
       else
         render json: @flashcard_set.errors, status: :unprocessable_entity
-        
+
       end
     end
 

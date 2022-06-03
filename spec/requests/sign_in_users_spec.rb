@@ -11,6 +11,10 @@ RSpec.describe 'Users', type: :request do
         expect(json['message']).to eq("Logged.")
       end
 
+      it 'returns logged_in == true' do
+        expect(json['logged_in']).to eq(true)
+      end
+
 
       it 'returns a created status' do
         expect(response).to have_http_status(:ok)
@@ -28,6 +32,7 @@ RSpec.describe 'Users', type: :request do
       it 'returns a unprocessable entity status' do
         expect(response).to have_http_status(:unauthorized)
       end
+
 
     end
   end

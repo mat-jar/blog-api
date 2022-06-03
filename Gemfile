@@ -39,6 +39,8 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'devise'
 gem 'devise-jwt'
 gem 'dotenv-rails', groups: [:development, :test]
+gem 'cancancan'
+gem 'devise-security'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

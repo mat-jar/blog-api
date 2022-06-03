@@ -70,6 +70,7 @@ GEM
     bootsnap (1.10.3)
       msgpack (~> 1.2)
     builder (3.2.4)
+    cancancan (3.3.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     debug (1.4.0)
@@ -84,6 +85,8 @@ GEM
     devise-jwt (0.9.0)
       devise (~> 4.0)
       warden-jwt_auth (~> 0.6)
+    devise-security (0.17.0)
+      devise (>= 4.3.0)
     diff-lcs (1.5.0)
     digest (3.1.0)
     dotenv (2.7.6)
@@ -231,9 +234,11 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  cancancan
   debug
   devise
   devise-jwt
+  devise-security
   dotenv-rails
   factory_bot_rails
   faker
