@@ -6,6 +6,7 @@ class Users::SessionsController < Devise::SessionsController
   def sign_in(resource_name, resource)
     super
     current_user.update(logged_in: true)
+    current_user.update(last_login_at: Time.now.utc)
   end
 
   def destroy
@@ -19,21 +20,13 @@ private
 
   def respond_with(resource, _opts = {})
 
-    #Warden::Manager.after_authentication do |user,auth,opts|
-    #user.logged_in = true
-    #render json: {message: 'Logged_Warden.'}, status: :ok
-    #end
-
     response.set_header('Hej', 'Mati')
     render json: {message: 'Logged.'}, status: :ok
     #render json: current_user, status: :ok
   end
 
   def respond_to_on_destroy
-
     !current_user ? log_out_success : log_out_failure
-    #log_out_success && return if current_user
-    #log_out_failure
   end
 
   def log_out_success

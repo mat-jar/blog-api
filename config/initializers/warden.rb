@@ -1,13 +1,8 @@
-=begin
-Warden::JWTAuth::Middleware::TokenDispatcher.class_eval do
-  ENV_KEY = 'warden-jwt_auth.token_dispatcher'
-    def call(env)
+require 'fresh_token_strategy'
 
-      env[ENV_KEY] = true
-          status, headers, response = app.call(env)
-          headers = headers_with_token(env, headers)
-          response.body.replace(response.body[0..-2].concat(",\"auth_token\":\"#{headers['Authorization']}\"}") )
-          [status, headers, response]
-    end
+Warden::Strategies.add(:fresh_token, FreshTokenStrategy)
+
+Warden::Manager.after_authentication do |user,auth,opts|
+  user.last_request_at = Time.now.utc
+  user.save
 end
-=end

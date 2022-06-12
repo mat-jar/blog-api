@@ -2,7 +2,7 @@ class Users::UserDetailsController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    render json: user_session
+    render json: current_user
   end
 
   def show_all

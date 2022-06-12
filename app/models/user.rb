@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :flashcards, through: :flashcard_sets
   has_many :flashcard_set_settings_panels, dependent: :destroy
   has_many :learning_sessions
+  has_many :answer_times, through: :learning_sessions
   has_many :students, class_name: "User", foreign_key: "teacher_id"
   belongs_to :teacher, class_name: "User", optional: true
   validate :is_teacher_and_student
@@ -18,13 +19,11 @@ class User < ApplicationRecord
     if  teacher_id.present? && (User.find(teacher_id).role != "teacher" || role != "student")
       errors.add(:teacher_id, "teacher must be a teacher and student a student")
     end
-  #
+
   end
 
   def jwt_payload
-  { "logged_in_time" => Time.now }
-end
-
-
+    { "last_login_at" => Time.now.utc}
+  end
 
 end
