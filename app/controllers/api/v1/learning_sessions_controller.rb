@@ -6,8 +6,6 @@ class Api::V1::LearningSessionsController < ApplicationController
 
     render json: @learning_sessions
 
-    #render json: { message: current_user}
-    #render json: { message: "index"}
   end
 
   def show_specific
@@ -16,15 +14,15 @@ class Api::V1::LearningSessionsController < ApplicationController
 
     if user_id && flashcard_set_id
       @learning_sessions = LearningSession.where("user_id = ?", user_id).where("flashcard_set_id = ?", flashcard_set_id)
-      #render json: { message: "user #{user}+set#{flashcard_set}."}
+
       render json: @learning_sessions
     elsif user_id && !flashcard_set_id
       @learning_sessions = LearningSession.where("user_id = ?", user_id)
-      #render json: { message: "only user #{user}"}
+
       render json: @learning_sessions
     elsif !user_id && flashcard_set_id
       @learning_sessions = LearningSession.where("flashcard_set_id = ?", flashcard_set_id)
-      #render json: { message: "only sset #{flashcard_set} "}
+      
       render json: @learning_sessions
     else
     render json: { message: "nothing hill"}
