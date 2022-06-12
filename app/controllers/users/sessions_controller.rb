@@ -1,6 +1,19 @@
 class Users::SessionsController < Devise::SessionsController
   include Devise::Controllers::Helpers
   respond_to :json
+  skip_before_action :verify_signed_out_user #without I couldn't override destroy since I'm not ussing sessions and Devise thinks nobody's logged
+
+  def sign_in(resource_name, resource)
+    super
+    current_user.update(logged_in: true)
+    current_user.update(last_login_at: Time.now.utc)
+  end
+
+  def destroy
+    current_user.update(logged_in: false) if current_user
+    super
+
+  end
 
 
 private
@@ -9,10 +22,11 @@ private
 
     response.set_header('Hej', 'Mati')
     render json: {message: 'Logged.'}, status: :ok
+    #render json: current_user, status: :ok
   end
 
   def respond_to_on_destroy
-    current_user ? log_out_success : log_out_failure
+    !current_user ? log_out_success : log_out_failure
   end
 
   def log_out_success
