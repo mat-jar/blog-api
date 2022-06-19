@@ -32,6 +32,13 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :api do
+          namespace :v1 do
+            namespace :message_storage do
+              get 'list', to: 'list'
+            end
+          end
+        end
 
   namespace :api do
       namespace :v1 do

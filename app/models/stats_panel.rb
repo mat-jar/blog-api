@@ -1,15 +1,9 @@
 class StatsPanel < ApplicationRecord
 
-  def self.list
-
-
-  end
-  def self.push(raw_stats)
-    sp = StatsPanel.new(message: raw_stats)
-    sp.save!
-
-
-  end
+    def self.push(raw_stats)
+      sp = StatsPanel.new(message: raw_stats)
+      sp.save!
+    end
 end
 
 
@@ -27,4 +21,16 @@ class StatsPanel < ApplicationRecord
     $redis.ltrim(KEY, 0, STORE_LIMIT-1)
   end
 end
+=end
+
+=begin
+
+class StatsPanel < ApplicationRecord
+
+    def self.push(raw_stats)
+      sp = StatsPanel.new(message: raw_stats)
+      sp.save!
+    end
+end
+
 =end
