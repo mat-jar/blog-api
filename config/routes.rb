@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'messages/index'
   devise_for :users, path: 'api/v1/users', defaults: { format: :json },
              controllers: {
                  sessions: 'users/sessions',
