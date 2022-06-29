@@ -4,13 +4,15 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    can :read, LearningSession, user: user
+
+    can [:show_specific, :index], LearningSession, user_id: user.id
 
     return unless user.teacher?
-    can :read, LearningSession, user: user.students
+    can [:show_specific, :index], LearningSession, user_id: user.students.ids
 
     return unless user.admin?
-    can :read, LearningSession
+    can [:show_specific, :index], LearningSession
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

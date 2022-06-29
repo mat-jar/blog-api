@@ -1,28 +1,32 @@
 class Api::V1::LearningSessionsController < ApplicationController
   before_action :authenticate_user!
+  #load_and_authorize_resource
+
 
   def index
-    @learning_sessions = LearningSession.where("user_id = ?", current_user)
-
+    @learning_sessions = LearningSession.accessible_by(current_ability, :index)
     render json: @learning_sessions
-
   end
 
   def show_specific
-    user_id = learning_session_param[:user_id]
-    flashcard_set_id = learning_session_param[:flashcard_set_id]
+    user_id = learning_session_param[:user_id].to_s
+    flashcard_set_id = learning_session_param[:flashcard_set_id].to_s
 
-    if user_id && flashcard_set_id
-      @learning_sessions = LearningSession.where("user_id = ?", user_id).where("flashcard_set_id = ?", flashcard_set_id)
-
-      render json: @learning_sessions
-    elsif user_id && !flashcard_set_id
+    if !user_id.empty? && !flashcard_set_id.empty?
       @learning_sessions = LearningSession.where("user_id = ?", user_id)
+      .where("flashcard_set_id = ?", flashcard_set_id)
+      .accessible_by(current_ability, :show_specific)
 
       render json: @learning_sessions
-    elsif !user_id && flashcard_set_id
+    elsif !user_id.empty? && flashcard_set_id.empty?
+      @learning_sessions = LearningSession.where("user_id = ?", user_id)
+      .accessible_by(current_ability, :show_specific)
+
+      render json: @learning_sessions
+    elsif user_id.empty? && !flashcard_set_id.empty?
       @learning_sessions = LearningSession.where("flashcard_set_id = ?", flashcard_set_id)
-      
+      .accessible_by(current_ability, :show_specific)
+
       render json: @learning_sessions
     else
     render json: { message: "nothing hill"}
@@ -41,9 +45,9 @@ class Api::V1::LearningSessionsController < ApplicationController
   end
 
   private
+
     def learning_session_param
       params.require(:learning_session).permit(:flashcard_set_id, :user_id)
     end
-
 
 end
