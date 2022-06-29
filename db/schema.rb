@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_30_115333) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_29_134753) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_30_115333) do
     t.integer "time_millisecond"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["flashcard_id", "round", "learning_session_id"], name: "answer_times_unique_index", unique: true
     t.index ["flashcard_id"], name: "index_answer_times_on_flashcard_id"
     t.index ["learning_session_id"], name: "index_answer_times_on_learning_session_id"
   end
@@ -90,6 +91,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_30_115333) do
     t.index ["user_id"], name: "index_learning_sessions_on_user_id"
   end
 
+  create_table "stats_panels", force: :cascade do |t|
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -103,6 +110,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_30_115333) do
     t.bigint "teacher_id"
     t.datetime "last_request_at"
     t.boolean "logged_in", default: false
+    t.datetime "last_login_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["teacher_id"], name: "index_users_on_teacher_id"
