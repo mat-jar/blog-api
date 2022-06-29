@@ -26,4 +26,6 @@ class User < ApplicationRecord
     { "last_login_at" => Time.now.utc}
   end
 
+  
+
 end

@@ -12,7 +12,7 @@ module FlashcardsApi
     config.load_defaults 7.0
     # This also configures session_options for use below
     #config.middleware.use ActionDispatch::Cookies
-    #config.middleware.use ActionDispatch::Session::CookieStore, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Session::CookieStore, key: '_interslice_session'
 
 
     #config.middleware.insert_after(ActionDispatch::Cookies, ActionDispatch::Session::CookieStore, key: '_interslice_session')
