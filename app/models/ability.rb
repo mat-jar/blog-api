@@ -7,7 +7,7 @@ class Ability
 
     can [:show_specific, :index], LearningSession, user_id: user.id
 
-    return unless user.teacher?
+    return unless (user.teacher? || user.admin?)
     can [:show_specific, :index], LearningSession, user_id: user.students.ids
 
     return unless user.admin?
