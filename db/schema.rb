@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2022_06_30_074627) do
-=======
-<<<<<<< HEAD
-ActiveRecord::Schema[7.0].define(version: 2022_06_13_085104) do
-=======
-ActiveRecord::Schema[7.0].define(version: 2022_06_29_134753) do
->>>>>>> main
->>>>>>> feature/answer_times
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
