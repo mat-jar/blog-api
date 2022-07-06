@@ -26,6 +26,18 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :api do
+        namespace :v1 do
+          post 'answer_times', to: 'answer_times#create'
+          namespace :answer_times do
+            get 'user_average', to: 'user_average'
+            get 'flashcard_set_average', to: 'flashcard_set_average'
+            get 'word_average', to: 'word_average'
+            get 'learning_session_average', to: 'learning_session_average'
+          end
+        end
+      end
+
 
   namespace :api do
       namespace :v1 do
@@ -38,8 +50,5 @@ Rails.application.routes.draw do
   authenticated do
     root to: "secret#index", as: :authenticated_root
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

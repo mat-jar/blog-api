@@ -6,4 +6,5 @@ class FlashcardSet < ApplicationRecord
   accepts_nested_attributes_for :flashcards
   validates :title, presence: true
   has_many :learning_sessions
+  has_many :answer_times, through: :learning_sessions
 end
