@@ -1,13 +1,28 @@
 class Api::V1::FlashcardSetsController < ApplicationController
   before_action :set_flashcard_set
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:show_shared]
 
   #before_action :authenticate_user!
   #before_action :set_flashcard_set, only: [:index, :show, :edit, :update, :destroy]
 
     # GET /flashcard_sets
     def index
-      @flashcard_sets = FlashcardSet.all
+      @flashcard_sets = FlashcardSet.accessible_by(current_ability, :index)
+      render json: @flashcard_sets
+    end
+
+    def show_specific
+      @flashcard_sets = FlashcardSet.accessible_by(current_ability, :show_specific)
+      render json: @flashcard_sets
+    end
+
+    def show_accessible
+      @flashcard_sets = FlashcardSet.accessible_by(current_ability, :show_accessible)
+      render json: @flashcard_sets
+    end
+
+    def show_shared
+      @flashcard_sets = FlashcardSet.shared
       render json: @flashcard_sets
     end
 

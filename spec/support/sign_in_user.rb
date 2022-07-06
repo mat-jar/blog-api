@@ -1,7 +1,7 @@
-RSpec.shared_context "sign_up_users", :shared_context => :metadata do
-    let!(:new_user) { FactoryBot.build(:user)}
+RSpec.shared_context "sign_in_user", :shared_context => :metadata do
+
     before do
-      post '/api/v1/users', params:
+      post '/api/v1/users/sign_in', params:
                         { user: {
                           email: new_user.email,
                           password: new_user.password

@@ -5,7 +5,7 @@ class Users::UserDetailsController < ApplicationController
     render json: current_user
   end
 
-  def show_all
+  def show_accessible
     users = User.all
     render json: users
   end

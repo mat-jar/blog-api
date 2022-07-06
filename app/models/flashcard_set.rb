@@ -1,4 +1,5 @@
 class FlashcardSet < ApplicationRecord
+  enum access: { shared: 0, personal: 1, class: 2 }
   belongs_to :user
   has_many :flashcards, dependent: :destroy
   has_many :flashcard_set_settings_panels, dependent: :destroy

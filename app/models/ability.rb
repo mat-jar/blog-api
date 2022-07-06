@@ -5,13 +5,19 @@ class Ability
 
   def initialize(user)
 
-    can [:show_specific, :index], LearningSession, user_id: user.id
+    can :show_shared, FlashcardSet, {access: :shared}
+    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet], user_id: user.id
+
+    if user.teacher
+      can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.teacher.id}
+    end
 
     return unless (user.teacher? || user.admin?)
-    can [:show_specific, :index], LearningSession, user_id: user.students.ids
+    can [:show_specific, :show_accessible], LearningSession, {user_id: user.students.ids, flashcard_set: {access: :class}}
+    can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.students.ids}
 
     return unless user.admin?
-    can [:show_specific, :index], LearningSession
+    can [:show_specific, :show_accessible], [LearningSession, FlashcardSet]
 
     # Define abilities for the passed in user here. For example:
     #

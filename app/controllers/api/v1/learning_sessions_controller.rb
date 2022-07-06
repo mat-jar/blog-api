@@ -8,6 +8,11 @@ class Api::V1::LearningSessionsController < ApplicationController
     render json: @learning_sessions
   end
 
+  def show_accessible
+    @learning_sessions = LearningSession.accessible_by(current_ability, :show_accessible)
+    render json: @learning_sessions
+  end
+
   def show_specific
     user_id = learning_session_param[:user_id].to_s
     flashcard_set_id = learning_session_param[:flashcard_set_id].to_s

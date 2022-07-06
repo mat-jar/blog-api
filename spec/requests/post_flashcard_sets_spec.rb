@@ -1,34 +1,31 @@
 require 'rails_helper'
-require "support/sign_up_users.rb"
-require "support/sign_in_users.rb"
 
 RSpec.describe 'FlashcardSets', type: :request do
   describe 'POST /create' do
 
     context 'with valid parameters' do
-    include_context "sign_up_users"
-    include_context "sign_in_users"
-      let!(:my_flashcard_set) { FactoryBot.build(:flashcard_set) }
+    include_context "sign_up_and_sign_in_user"
+    let!(:new_flashcard_set) { FactoryBot.build(:flashcard_set) }
 
       before do
         post '/api/v1/flashcard_sets', params:
                           { flashcard_set: {
-                            title: my_flashcard_set.title,
-                            description: my_flashcard_set.description,
-                            category: my_flashcard_set.category
-                          } }
+                            title: new_flashcard_set.title,
+                            description: new_flashcard_set.description,
+                            category: new_flashcard_set.category
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
       end
 
       it 'returns the title' do
-        expect(json['title']).to eq(my_flashcard_set.title)
+        expect(json['title']).to eq(new_flashcard_set.title)
       end
 
       it 'returns the description' do
-        expect(json['description']).to eq(my_flashcard_set.description)
+        expect(json['description']).to eq(new_flashcard_set.description)
       end
 
       it 'returns the category' do
-        expect(json['category']).to eq(my_flashcard_set.category)
+        expect(json['category']).to eq(new_flashcard_set.category)
       end
 
       it 'returns a created status' do
@@ -37,14 +34,13 @@ RSpec.describe 'FlashcardSets', type: :request do
     end
 
     context 'with invalid parameters' do
-    include_context "sign_up_users"
-    include_context "sign_in_users"
+    include_context "sign_up_and_sign_in_user"
       before do
         post '/api/v1/flashcard_sets', params:
                           { flashcard_set: {
                             title: '',
                             body: ''
-                          } }
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
       end
       it 'returns an unprocessable entity status' do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -53,14 +49,14 @@ RSpec.describe 'FlashcardSets', type: :request do
 
       context 'without logged user' do
 
-        let!(:my_flashcard_set) { FactoryBot.build(:flashcard_set) }
+        let!(:new_flashcard_set) { FactoryBot.build(:flashcard_set) }
 
         before do
           post '/api/v1/flashcard_sets', params:
                             { flashcard_set: {
-                              title: my_flashcard_set.title,
-                              description: my_flashcard_set.description,
-                              category: my_flashcard_set.category
+                              title: new_flashcard_set.title,
+                              description: new_flashcard_set.description,
+                              category: new_flashcard_set.category
                             } }
         end
         it 'returns a demand to log in or sign up' do
