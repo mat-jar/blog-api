@@ -30,5 +30,6 @@
 
 /flashcards_front
 /flashcards_front/*
+/coverage
 
 .gitignore
