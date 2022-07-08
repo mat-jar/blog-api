@@ -64,8 +64,10 @@ class Api::V1::FlashcardSetsController < ApplicationController
     # DELETE /flashcard_sets/1
     def destroy
       @flashcard_set.destroy
+      authorize! :destroy, @flashcard_set
 
       render json: { notice: 'Flashcards set was successfully removed.' }
+      head :no_content, status: :ok
     end
 
     private

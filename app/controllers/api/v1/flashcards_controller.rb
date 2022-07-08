@@ -1,4 +1,5 @@
 class Api::V1::FlashcardsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
@@ -23,12 +24,12 @@ class Api::V1::FlashcardsController < ApplicationController
   end
 
   def destroy
-   @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
-   @flashcard = @flashcard_set.flashcards.find(params[:id])
+   @flashcard = Flashcard.find(params[:id])
    @flashcard.destroy
-
+   authorize! :destroy, @flashcard
 
    render json: { notice: 'Flashcard was successfully removed.' }
+   head :no_content, status: :ok
  end
 
  def edit
