@@ -16,5 +16,9 @@ FactoryBot.define do
     email { Faker::Internet.email}
     password { Faker::Internet.password}
   end
+  factory :answer_time do
+    round { Faker::Number.between}
+    time_millisecond { Faker::Number.between}
+  end
 
 end

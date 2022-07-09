@@ -1,6 +1,5 @@
 class Api::V1::AnswerTimesController < ApplicationController
-
-
+  before_action :authenticate_user!
 
   def create
     @answer_time = AnswerTime.new(answer_time_param)
@@ -8,7 +7,8 @@ class Api::V1::AnswerTimesController < ApplicationController
     if @answer_time.save
       render json: @answer_time
     else
-      render json: @answer_time.errors
+      render json: @answer_time.errors, status: :unprocessable_entity
+
     end
   end
 

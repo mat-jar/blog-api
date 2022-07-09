@@ -6,6 +6,7 @@ class AnswerTime < ApplicationRecord
   validate :does_flashcard_belong_to_learning_session
 
   def does_flashcard_belong_to_learning_session
+    return if ([ flashcard_id, learning_session_id].any?(&:blank?))
     if  Flashcard.find(flashcard_id).flashcard_set != LearningSession.find(learning_session_id).flashcard_set
       errors.add(:answer_time, "Flashcard and learning session can't have different flashcard sets")
     end
