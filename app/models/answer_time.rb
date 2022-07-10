@@ -4,6 +4,7 @@ class AnswerTime < ApplicationRecord
   validates :flashcard, :learning_session, :round, :time_millisecond,  presence: true
   validates :flashcard, uniqueness: { scope: [:round, :learning_session], message: "Can't have two answer times for the same flashcard in the same round of learning_session" }
   validate :does_flashcard_belong_to_learning_session
+  validates :time_millisecond, numericality: { in: 0..10000, only_integer: true }
 
   def does_flashcard_belong_to_learning_session
     return if ([ flashcard_id, learning_session_id].any?(&:blank?))
