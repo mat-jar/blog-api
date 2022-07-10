@@ -6,7 +6,6 @@ class Users::SessionsController < Devise::SessionsController
   def sign_in(resource_name, resource)
     super
     current_user.update(logged_in: true)
-    current_user.update(last_login_at: Time.now.utc)
   end
 
   def destroy

@@ -7,8 +7,9 @@ class FreshTokenStrategy < Warden::Strategies::Base
     user = Warden::JWTAuth::UserDecoder.new.call(api_token, :user, nil)
     last_login_at_from_user = user.last_login_at.to_s
     last_login_at_from_token = Warden::JWTAuth::TokenDecoder.new.call(api_token)["last_login_at"]
-    
+
     if !(last_login_at_from_user == last_login_at_from_token)
+      debugger
       fail!('Outdated token')
     end
   end

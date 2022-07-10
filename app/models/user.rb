@@ -26,6 +26,8 @@ class User < ApplicationRecord
     { "last_login_at" => Time.now.utc}
   end
 
-  
+  def on_jwt_dispatch(token, payload)
+    User.find(payload["sub"]).update(last_login_at: payload["last_login_at"])  
+  end
 
 end
