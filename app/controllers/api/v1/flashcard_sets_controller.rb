@@ -35,11 +35,6 @@ class Api::V1::FlashcardSetsController < ApplicationController
       end
     end
 
-    # GET /flashcard_sets/new
-    def new
-      @flashcard_set = FlashcardSet.new
-    end
-
     # GET /flashcard_sets/1/edit
     def edit
     end

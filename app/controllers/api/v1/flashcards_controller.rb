@@ -7,12 +7,6 @@ class Api::V1::FlashcardsController < ApplicationController
     render json: @flashcards
   end
 
-
-  # GET /flashcard/new
-  def new
-    @flashcard = Flashcard.new
-  end
-
   def create
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
     @flashcard = @flashcard_set.flashcards.new(flashcard_params)
