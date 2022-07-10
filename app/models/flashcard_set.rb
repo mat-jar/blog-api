@@ -7,4 +7,10 @@ class FlashcardSet < ApplicationRecord
   validates :title, presence: true
   has_many :learning_sessions
   has_many :answer_times, through: :learning_sessions
+
+  def to_param
+    return nil unless persisted?
+    "#{id}-#{title.parameterize}" # 12-human-body
+  end
+
 end

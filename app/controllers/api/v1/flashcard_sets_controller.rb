@@ -75,10 +75,17 @@ class Api::V1::FlashcardSetsController < ApplicationController
       def set_flashcard_set
         if params[:id]
           @flashcard_set = FlashcardSet.find(params[:id])
+          render status: :not_found if id_with_wrong_title?
         end
       end
 
       def flashcard_set_params
         params.require(:flashcard_set).permit(:title, :description, :category)
       end
+
+      def id_with_wrong_title?
+        (params[:id].sub(@flashcard_set.id.to_s, '') != '') &&
+        (@flashcard_set.to_param != params[:id])
+      end
+
 end
