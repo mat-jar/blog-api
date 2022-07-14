@@ -13,19 +13,19 @@ class Api::V1::AnswerTimesController < ApplicationController
   end
 
   def user_average
-    AnalyseAnswerTime.get_user_average_answer_time(analyse_answer_time_param[:user_id])
+    AnalyseAnswerTime.get_average_by_user(analyse_answer_time_param[:user_id])
   end
 
   def flashcard_set_average
-    AnalyseAnswerTime.get_flashcard_set_average_answer_time(analyse_answer_time_param[:flashcard_id])
+    AnalyseAnswerTime.get_average_by_flashcard_set(analyse_answer_time_param[:flashcard_id])
   end
 
   def word_average
-    AnalyseAnswerTime.get_word_average_answer_time(analyse_answer_time_param[:word])
+    AnalyseAnswerTime.get_average_by_word(analyse_answer_time_param[:word])
   end
 
   def learning_session_average
-    AnalyseAnswerTime.get_learning_session_average_answer_time(analyse_answer_time_param[:learning_session_id])
+    AnalyseAnswerTime.get_average_by_learning_session(analyse_answer_time_param[:learning_session_id])
   end
 
 
