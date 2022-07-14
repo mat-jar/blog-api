@@ -2,7 +2,7 @@ require 'rails_helper'
 
 
 RSpec.describe 'FlashcardSets', type: :request do
-  describe 'GET /show_shared' do
+  describe 'POST /show_shared' do
 
     context 'with "shared" flashcard_set' do
 
@@ -11,7 +11,7 @@ RSpec.describe 'FlashcardSets', type: :request do
 
       before do
 
-        get '/api/v1/flashcard_sets/show_shared'
+        post '/api/v1/flashcard_sets/show_shared'
       end
 
       it 'returns flashcard_set' do
@@ -28,8 +28,46 @@ RSpec.describe 'FlashcardSets', type: :request do
 
       before do
 
-        get '/api/v1/flashcard_sets/show_shared'
+        post '/api/v1/flashcard_sets/show_shared'
 
+      end
+
+      it 'returns empty array' do
+        expect(response.body).to eq("[]")
+
+      end
+    end
+
+    context 'with "shared" flashcard_set and correct "title" search params' do
+
+      let!(:new_user) { FactoryBot.create(:user) }
+      let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id, access: :shared) }
+
+      before do
+
+        post '/api/v1/flashcard_sets/show_shared', params:
+                          { flashcard_set: {
+                            title: new_flashcard_set.title
+                          } }
+      end
+
+      it 'returns flashcard_set' do
+        expect(json[0]).to eq(JSON.parse(new_flashcard_set.to_json))
+
+      end
+    end
+
+    context 'with "shared" flashcard_set and not correct "title" search params' do
+
+      let!(:new_user) { FactoryBot.create(:user) }
+      let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id, access: :shared) }
+
+      before do
+
+        post '/api/v1/flashcard_sets/show_shared', params:
+                          { flashcard_set: {
+                            title: "koza"
+                          } }
       end
 
       it 'returns empty array' do

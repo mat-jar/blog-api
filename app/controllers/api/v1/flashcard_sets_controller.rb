@@ -11,28 +11,25 @@ class Api::V1::FlashcardSetsController < ApplicationController
       render json: @flashcard_sets
     end
 
-    def show_specific
-      @flashcard_sets = FlashcardSet.accessible_by(current_ability, :show_specific)
-      render json: @flashcard_sets
-    end
-
     def show_accessible
       @flashcard_sets = FlashcardSet.accessible_by(current_ability, :show_accessible)
+      if !search_flashcard_set_params.empty?
+        @flashcard_sets = SearchFlashcardSets.call(@flashcard_sets, search_flashcard_set_params)
+      end
       render json: @flashcard_sets
     end
 
     def show_shared
       @flashcard_sets = FlashcardSet.shared
+      if !search_flashcard_set_params.empty?
+        @flashcard_sets = SearchFlashcardSets.call(@flashcard_sets, search_flashcard_set_params)
+      end
       render json: @flashcard_sets
     end
 
     # GET /flashcard_sets/1
     def show
-      if @flashcard_set
         render json: @flashcard_set
-      else
-        render json: @flashcard_set.errors
-      end
     end
 
     # GET /flashcard_sets/1/edit
@@ -76,6 +73,10 @@ class Api::V1::FlashcardSetsController < ApplicationController
 
       def flashcard_set_params
         params.require(:flashcard_set).permit(:title, :description, :category)
+      end
+
+      def search_flashcard_set_params
+        params.fetch(:flashcard_set, {}).permit(:user_id, :title, :description, :category)
       end
 
       def id_with_wrong_title?

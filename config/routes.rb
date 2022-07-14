@@ -15,13 +15,12 @@ Rails.application.routes.draw do
       namespace :v1 do
         resources :learning_sessions do
           post 'show_specific', on: :collection
-          get 'show_accessible', on: :collection
+          post 'show_accessible', on: :collection
           # on: :collection  zamienia /api/v1/learning_sessions/:id/show_specific(.:format)  na /api/v1/learning_sessions/show_specific(.:format)
         end
         resources :flashcard_sets do
-          post 'show_specific', on: :collection
-          get 'show_accessible', on: :collection
-          get 'show_shared', on: :collection
+          post 'show_accessible', on: :collection
+          post 'show_shared', on: :collection
         end
       end
     end

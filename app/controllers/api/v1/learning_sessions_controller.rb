@@ -10,6 +10,9 @@ class Api::V1::LearningSessionsController < ApplicationController
 
   def show_accessible
     @learning_sessions = LearningSession.accessible_by(current_ability, :show_accessible)
+    if !search_learning_session_param.empty?
+      @learning_sessions = SearchLearningSessions.call(@learning_sessions, search_learning_session_param)
+    end
     render json: @learning_sessions
   end
 
@@ -53,6 +56,10 @@ class Api::V1::LearningSessionsController < ApplicationController
 
     def learning_session_param
       params.require(:learning_session).permit(:flashcard_set_id, :user_id)
+    end
+
+    def search_learning_session_param
+      params.fetch(:learning_session, {}).permit(:flashcard_set_id, :user_id)
     end
 
 end

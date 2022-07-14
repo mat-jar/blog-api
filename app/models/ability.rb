@@ -5,7 +5,7 @@ class Ability
 
   def initialize(user)
 
-    can :show_shared, FlashcardSet, {access: :shared}
+    can [:show_shared, :show_accessible], FlashcardSet, {access: :shared}
     can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet], user_id: user.id
     can :manage, FlashcardSet, user_id: user.id
     can :manage, Flashcard, flashcard_set: {user_id: user.id}

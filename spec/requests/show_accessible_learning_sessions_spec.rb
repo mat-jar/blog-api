@@ -2,7 +2,7 @@ require 'rails_helper'
 
 
 RSpec.describe 'LearningSessions', type: :request do
-  describe 'GET /show_accessible' do
+  describe 'POST /show_accessible' do
 
     context 'with teacher, their student and "class" flashcard_set' do
       include_context "sign_up_and_sign_in_teacher"
@@ -14,7 +14,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
 
@@ -38,7 +38,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
 
@@ -58,7 +58,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
       it 'returns empty array' do
@@ -79,7 +79,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
       it 'returns their learning_sessions' do
@@ -102,7 +102,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
       it 'returns empty array' do
@@ -123,13 +123,40 @@ RSpec.describe 'LearningSessions', type: :request do
 
       before do
 
-        get '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+        post '/api/v1/learning_sessions/show_accessible', headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
 
       end
       it 'returns learning_sessions' do
         expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
         expect(json[1]).to eq(JSON.parse(new_learning_session2.to_json))
         expect(json[2]).to eq(JSON.parse(new_learning_session3.to_json))
+      end
+
+    end
+
+    context 'with teacher, "class" flashcard_set_id and user_id who is this teachers student' do
+      include_context "sign_up_and_sign_in_teacher"
+
+      let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
+      let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
+      let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
+      let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_student.id) }
+      let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_student.id) }
+
+      before do
+
+        post '/api/v1/learning_sessions/show_accessible', params:
+                          { learning_session: {
+                            flashcard_set_id: new_flashcard_set1.id,
+                            user_id: new_student.id
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+      end
+
+      it 'returns specific learning_sessions' do
+
+        expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
+        expect(json[1]).to eq(nil)
+
       end
 
     end
