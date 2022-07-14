@@ -81,5 +81,32 @@ RSpec.describe 'AnswerTimes', type: :request do
           expect(response).to have_http_status(:unauthorized)
         end
     end
+
+    context 'with flashcard_sets of learning_session and flashcard' do
+    include_context "sign_up_and_sign_in_user"
+    let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
+    let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
+    let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set1.id) }
+    let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_user.id) }
+    let!(:new_answer_time) { FactoryBot.build(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id) }
+
+      before do
+        post '/api/v1/answer_times', params:
+                          { answer_time: {
+                            learning_session_id: new_answer_time.learning_session_id,
+                            flashcard_id: new_answer_time.flashcard_id,
+                            round: new_answer_time.round,
+                            time_millisecond: new_answer_time.time_millisecond
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+      end
+      it 'returns an unauthorized status' do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns a demand to log in or sign up' do
+        expect(json["answer_time"][0]).to eq("Flashcard and learning session can't have different flashcard sets")
+      end
+    end
+
   end
 end
