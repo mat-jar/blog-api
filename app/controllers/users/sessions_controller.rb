@@ -9,7 +9,13 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def destroy
-    current_user.update(logged_in: false) if current_user
+    if !current_user
+      log_out_failure
+      return
+    else
+      current_user.update(logged_in: false)
+    end
+
     super
 
   end
@@ -25,6 +31,7 @@ private
   end
 
   def respond_to_on_destroy
+
     !current_user ? log_out_success : log_out_failure
   end
 
