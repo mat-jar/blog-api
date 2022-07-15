@@ -166,5 +166,65 @@ RSpec.describe 'FlashcardSets', type: :request do
       end
     end
 
+    context 'with teacher, their student, "class" flashcard_set and correct "user_id" search params' do
+      include_context "sign_up_and_sign_in_teacher"
+
+      let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
+      let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
+
+      before do
+
+        post '/api/v1/flashcard_sets/show_accessible', params:
+                          { flashcard_set: {
+                            user_id: new_flashcard_set.user_id
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+      end
+
+      it 'returns flashcard_set' do
+        expect(json[0]).to eq(JSON.parse(new_flashcard_set.to_json))
+
+      end
+    end
+
+    context 'with teacher, their student, "class" flashcard_set and correct "category" search params' do
+      include_context "sign_up_and_sign_in_teacher"
+
+      let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
+      let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
+
+      before do
+
+        post '/api/v1/flashcard_sets/show_accessible', params:
+                          { flashcard_set: {
+                            category: new_flashcard_set.category
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+      end
+
+      it 'returns flashcard_set' do
+        expect(json[0]).to eq(JSON.parse(new_flashcard_set.to_json))
+
+      end
+    end
+
+    context 'with teacher, their student, "class" flashcard_set and correct "description" search params' do
+      include_context "sign_up_and_sign_in_teacher"
+
+      let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
+      let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
+
+      before do
+
+        post '/api/v1/flashcard_sets/show_accessible', params:
+                          { flashcard_set: {
+                            description: new_flashcard_set.description
+                          } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
+      end
+
+      it 'returns flashcard_set' do
+        expect(json[0]).to eq(JSON.parse(new_flashcard_set.to_json))
+
+      end
+    end
+
   end
 end
