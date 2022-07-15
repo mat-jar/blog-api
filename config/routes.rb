@@ -29,10 +29,10 @@ Rails.application.routes.draw do
         namespace :v1 do
           post 'answer_times', to: 'answer_times#create'
           namespace :answer_times do
-            get 'user_average', to: 'user_average'
-            get 'flashcard_set_average', to: 'flashcard_set_average'
-            get 'word_average', to: 'word_average'
-            get 'learning_session_average', to: 'learning_session_average'
+            post 'user_average', to: 'user_average'
+            post 'flashcard_set_average', to: 'flashcard_set_average'
+            post 'word_average', to: 'word_average'
+            post 'learning_session_average', to: 'learning_session_average'
           end
         end
       end
