@@ -33,7 +33,7 @@ class Api::V1::LearningSessionsController < ApplicationController
     if @learning_session.save
       render json: @learning_session
     else
-      render json: @learning_session.errors
+      render json: @learning_session.errors, status: :unprocessable_entity
     end
   end
 
