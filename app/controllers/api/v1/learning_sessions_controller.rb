@@ -17,27 +17,12 @@ class Api::V1::LearningSessionsController < ApplicationController
   end
 
   def show_specific
-    user_id = learning_session_param[:user_id].to_s
-    flashcard_set_id = learning_session_param[:flashcard_set_id].to_s
-
-    if !user_id.empty? && !flashcard_set_id.empty?
-      @learning_sessions = LearningSession.where("user_id = ?", user_id)
-      .where("flashcard_set_id = ?", flashcard_set_id)
-      .accessible_by(current_ability, :show_specific)
-
-      render json: @learning_sessions
-    elsif !user_id.empty? && flashcard_set_id.empty?
-      @learning_sessions = LearningSession.where("user_id = ?", user_id)
-      .accessible_by(current_ability, :show_specific)
-
-      render json: @learning_sessions
-    elsif user_id.empty? && !flashcard_set_id.empty?
-      @learning_sessions = LearningSession.where("flashcard_set_id = ?", flashcard_set_id)
-      .accessible_by(current_ability, :show_specific)
-
+    if !search_learning_session_param.values_at("flashcard_set_id", "user_id").join.empty?
+      @learning_sessions = LearningSession.accessible_by(current_ability, :show_specific)
+      @learning_sessions = SearchLearningSessions.call(@learning_sessions, search_learning_session_param)
       render json: @learning_sessions
     else
-    render json: { message: "nothing hill"}
+    render json: { message: "Provide at least one valid parameter"}, status: :unprocessable_entity
     end
   end
 
