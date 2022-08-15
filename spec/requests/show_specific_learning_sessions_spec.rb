@@ -49,8 +49,8 @@ RSpec.describe 'LearningSessions', type: :request do
 
       it 'returns learning_sessions of all students learning this flashcard_set' do
 
-        expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
-        expect(json[1]).to eq(JSON.parse(new_learning_session2.to_json))
+        expect(json).to include(JSON.parse(new_learning_session1.to_json))
+        expect(json).to include(JSON.parse(new_learning_session2.to_json))
 
       end
 
@@ -75,8 +75,8 @@ RSpec.describe 'LearningSessions', type: :request do
 
       it 'returns learning_sessions of all students learning this flashcard_set' do
 
-        expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
-        expect(json[1]).to eq(JSON.parse(new_learning_session2.to_json))
+        expect(json).to include(JSON.parse(new_learning_session1.to_json))
+        expect(json).to include(JSON.parse(new_learning_session2.to_json))
 
       end
 
@@ -105,8 +105,8 @@ RSpec.describe 'LearningSessions', type: :request do
 
       it 'returns learning_sessions of all "class" flashcard_sets learnt' do
 
-        expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
-        expect(json[1]).to eq(JSON.parse(new_learning_session2.to_json))
+        expect(json).to include(JSON.parse(new_learning_session1.to_json))
+        expect(json).to include(JSON.parse(new_learning_session2.to_json))
         expect(json[2]).to eq(nil)
 
       end

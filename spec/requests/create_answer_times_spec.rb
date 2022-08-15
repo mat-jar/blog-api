@@ -99,11 +99,11 @@ RSpec.describe 'AnswerTimes', type: :request do
                             time_millisecond: new_answer_time.time_millisecond
                           } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
       end
-      it 'returns an unauthorized status' do
+      it 'returns an unprocessable_entity status' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
-      it 'returns a demand to log in or sign up' do
+      it 'returns a validation message' do
         expect(json["answer_time"][0]).to eq("Flashcard and learning session can't have different flashcard sets")
       end
     end

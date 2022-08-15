@@ -75,9 +75,9 @@ RSpec.describe 'FlashcardSets', type: :request do
 
       end
       it 'returns their flashcard set' do
-        expect(json[0]).to eq(JSON.parse(new_flashcard_set1.to_json))
-        expect(json[1]).to eq(JSON.parse(new_flashcard_set2.to_json))
-        expect(json[2]).to eq(JSON.parse(new_flashcard_set3.to_json))
+        expect(json).to include(JSON.parse(new_flashcard_set1.to_json))
+        expect(json).to include(JSON.parse(new_flashcard_set2.to_json))
+        expect(json).to include(JSON.parse(new_flashcard_set3.to_json))
       end
 
     end

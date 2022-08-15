@@ -17,7 +17,6 @@ RSpec.describe 'LearningSessions', type: :request do
       end
 
       it 'returns learning_sessions' do
-        #expect(response.body).to eq(new_learning_session.to_json)
         expect(json[0]).to eq(JSON.parse(new_learning_session.to_json))
 
       end

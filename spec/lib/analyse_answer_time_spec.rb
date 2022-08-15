@@ -13,6 +13,10 @@ RSpec.describe AnalyseAnswerTime do
     describe '#get_average_by_user' do
       context 'given a user_id' do
 
+        it 'does NOT raise error' do
+          expect{AnalyseAnswerTime.get_average_by_user(new_user.id)}.not_to raise_error
+        end
+
         it 'returns the average_answer_time' do
           expect(AnalyseAnswerTime.get_average_by_user(new_user.id)).to eq(4000)
         end

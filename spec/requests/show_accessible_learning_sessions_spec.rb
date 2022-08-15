@@ -127,11 +127,10 @@ RSpec.describe 'LearningSessions', type: :request do
 
       end
       it 'returns learning_sessions' do
-        expect(json[0]).to eq(JSON.parse(new_learning_session1.to_json))
-        expect(json[1]).to eq(JSON.parse(new_learning_session2.to_json))
-        expect(json[2]).to eq(JSON.parse(new_learning_session3.to_json))
+        expect(json).to include(JSON.parse(new_learning_session1.to_json))
+        expect(json).to include(JSON.parse(new_learning_session2.to_json))
+        expect(json).to include(JSON.parse(new_learning_session3.to_json))
       end
-
     end
 
     context 'with teacher, "class" flashcard_set_id and user_id who is this teachers student' do
@@ -158,7 +157,6 @@ RSpec.describe 'LearningSessions', type: :request do
         expect(json[1]).to eq(nil)
 
       end
-
     end
 
   end
