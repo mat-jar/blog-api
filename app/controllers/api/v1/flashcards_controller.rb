@@ -4,14 +4,15 @@ class Api::V1::FlashcardsController < ApplicationController
   def index
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
     @flashcards = @flashcard_set.flashcards.all()
-    render json: @flashcards
+    @flashcard_set_settings_panel = @flashcard_set.flashcard_set_settings_panels.where(user_id: current_user.id)
+    render json: {flashcards: @flashcards, flashcard_set_settings_panel: @flashcard_set_settings_panel}, status: :ok
   end
 
   def create
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
     @flashcard = @flashcard_set.flashcards.new(flashcard_params)
     if @flashcard.save
-      render json: @flashcard
+      render json: @flashcard, status: :ok
     else
       render json: @flashcard.errors, status: :unprocessable_entity
     end
@@ -26,19 +27,13 @@ class Api::V1::FlashcardsController < ApplicationController
    head :no_content, status: :ok
  end
 
- def edit
-   @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
-   @flashcard = @flashcard_set.flashcards.find(params[:id])
-end
-
  def update
-    @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
-    @flashcard = @flashcard_set.flashcards.find(params[:id])
+    @flashcard = Flashcard.find(params[:id])
 
     if @flashcard.update(flashcard_params)
-      redirect_to flashcard_set_path(@flashcard_set)
+      render json: @flashcard, status: :ok
     else
-      render :edit
+      render json: @flashcard.errors, status: :unprocessable_entity
     end
   end
 
