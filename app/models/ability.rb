@@ -9,6 +9,7 @@ class Ability
     can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet], user_id: user.id
     can :manage, FlashcardSet, user_id: user.id
     can :manage, Flashcard, flashcard_set: {user_id: user.id}
+    can [:show, :update], User, id: user.id
 
     if user.teacher
       can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.teacher.id}
@@ -19,7 +20,8 @@ class Ability
     can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.students.ids}
 
     return unless user.admin?
-    can [:show_specific, :show_accessible], [LearningSession, FlashcardSet]
+    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet]
+    can [:show, :show_all, :update], User
 
     # Define abilities for the passed in user here. For example:
     #

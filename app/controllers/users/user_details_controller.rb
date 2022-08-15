@@ -2,26 +2,42 @@ class Users::UserDetailsController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    render json: current_user
-  end
-
-  def show_accessible
-    users = User.all
-    render json: users
-  end
-
-  def update
     if user_id.empty?
-      current_user.update(user_param)
-      render json: current_user
+      render json: current_user, status: :ok
     else
       id = user_id['user_id']
       user = User.find(id)
+      authorize! :show, user
+      render json: user, status: :ok
+    end
+  end
+
+  def show_all
+    if current_user.admin?
+      users = User.all
+      render json: users, status: :ok
+    else
+      render status: :forbidden
+    end
+  end
+
+  def update
+
+    if user_id.empty?
+      if current_user.update(user_param)
+        render json: current_user, status: :ok
+      else
+        render json: current_user.errors,  status: :unprocessable_entity
+      end
+    else
+      id = user_id['user_id']
+      user = User.find(id)
+      authorize! :update, user
 
       if user.update(user_param)
-        render json: user
+        render json: user, status: :ok
       else
-        render json: user.errors
+        render json: user.errors,  status: :unprocessable_entity
       end
     end
   end
@@ -31,6 +47,6 @@ class Users::UserDetailsController < ApplicationController
       params.require(:user).permit(:name, :teacher_id, :role)
     end
     def user_id
-      params.require(:user).permit(:user_id)
+      params.fetch(:user, {}).permit(:user_id)
     end
 end
