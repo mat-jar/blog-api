@@ -8,7 +8,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
     # GET /flashcard_sets
     def index
       @flashcard_sets = FlashcardSet.accessible_by(current_ability, :index)
-      render json: @flashcard_sets
+      render json: @flashcard_sets, status: :ok
     end
 
     def show_accessible
@@ -16,7 +16,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
       if !search_flashcard_set_params.empty?
         @flashcard_sets = SearchFlashcardSets.call(@flashcard_sets, search_flashcard_set_params)
       end
-      render json: @flashcard_sets
+      render json: @flashcard_sets, status: :ok
     end
 
     def show_shared
@@ -24,16 +24,12 @@ class Api::V1::FlashcardSetsController < ApplicationController
       if !search_flashcard_set_params.empty?
         @flashcard_sets = SearchFlashcardSets.call(@flashcard_sets, search_flashcard_set_params)
       end
-      render json: @flashcard_sets
+      render json: @flashcard_sets, status: :ok
     end
 
     # GET /flashcard_sets/1
     def show
-        render json: @flashcard_set
-    end
-
-    # GET /flashcard_sets/1/edit
-    def edit
+        render json: @flashcard_set, status: :ok
     end
 
     # POST /flashcard_sets
@@ -42,7 +38,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
       @flashcard_set.user = current_user
 
       if @flashcard_set.save
-        render json: @flashcard_set
+        render json: @flashcard_set, status: :ok
       else
         render json: @flashcard_set.errors, status: :unprocessable_entity
 
@@ -51,6 +47,11 @@ class Api::V1::FlashcardSetsController < ApplicationController
 
     # PATCH/PUT flashcard_sets/1
     def update
+      if @flashcard_set.update(flashcard_set_params)
+        render json: @flashcard_set, status: :ok
+      else
+        render json: @flashcard_set.errors, status: :unprocessable_entity
+      end
     end
 
     # DELETE /flashcard_sets/1

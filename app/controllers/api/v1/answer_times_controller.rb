@@ -5,7 +5,7 @@ class Api::V1::AnswerTimesController < ApplicationController
     @answer_time = AnswerTime.new(answer_time_param)
 
     if @answer_time.save
-      render json: @answer_time
+      render json: @answer_time, status: :ok
     else
       render json: @answer_time.errors, status: :unprocessable_entity
 

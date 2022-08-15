@@ -5,7 +5,7 @@ class Api::V1::LearningSessionsController < ApplicationController
 
   def index
     @learning_sessions = LearningSession.accessible_by(current_ability, :index)
-    render json: @learning_sessions
+    render json: @learning_sessions, status: :ok
   end
 
   def show_accessible
@@ -13,14 +13,14 @@ class Api::V1::LearningSessionsController < ApplicationController
     if !search_learning_session_param.empty?
       @learning_sessions = SearchLearningSessions.call(@learning_sessions, search_learning_session_param)
     end
-    render json: @learning_sessions
+    render json: @learning_sessions, status: :ok
   end
 
   def show_specific
     if !search_learning_session_param.values_at("flashcard_set_id", "user_id").join.empty?
       @learning_sessions = LearningSession.accessible_by(current_ability, :show_specific)
       @learning_sessions = SearchLearningSessions.call(@learning_sessions, search_learning_session_param)
-      render json: @learning_sessions
+      render json: @learning_sessions, status: :ok
     else
     render json: { message: "Provide at least one valid parameter"}, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class Api::V1::LearningSessionsController < ApplicationController
     @learning_session.user = current_user
 
     if @learning_session.save
-      render json: @learning_session
+      render json: @learning_session, status: :ok
     else
       render json: @learning_session.errors, status: :unprocessable_entity
     end
