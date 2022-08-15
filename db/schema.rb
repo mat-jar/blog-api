@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_09_235618) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_12_224849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,14 +37,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_235618) do
   create_table "flashcard_set_settings_panels", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "flashcard_set_id", null: false
-    t.bigint "resume_flashcard_id", null: false
-    t.boolean "shuffle"
-    t.boolean "alphabetize"
+    t.bigint "resume_flashcard_id"
     t.boolean "front_first"
-    t.boolean "read"
+    t.boolean "audio"
+    t.boolean "answer_ignore_case"
+    t.boolean "answer_ignore_punctuation"
+    t.boolean "answer_ignore_spaces"
+    t.boolean "answer_ignore_parentheses"
+    t.integer "order"
     t.integer "mode"
     t.integer "answer_type"
-    t.integer "answer_ignore"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["flashcard_set_id"], name: "index_flashcard_set_settings_panels_on_flashcard_set_id"
@@ -106,12 +108,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_09_235618) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role", default: 0
+    t.integer "role", default: 1
     t.string "name"
     t.bigint "teacher_id"
     t.datetime "last_request_at"
     t.boolean "logged_in", default: false
-    t.datetime "last_login_at"
+    t.integer "last_login_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["teacher_id"], name: "index_users_on_teacher_id"

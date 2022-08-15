@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  enum role: { student: 0, teacher: 1, admin: 2 }
+  enum role: { student: 1, teacher: 2, admin: 3 }
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -23,11 +23,11 @@ class User < ApplicationRecord
   end
 
   def jwt_payload
-    { "last_login_at" => Time.now.utc}
+    { "last_login_at" => Time.now.to_i}
   end
 
   def on_jwt_dispatch(token, payload)
-    User.find(payload["sub"]).update(last_login_at: payload["last_login_at"])  
+    User.find(payload["sub"]).update(last_login_at: payload["last_login_at"])
   end
 
 end
