@@ -39,6 +39,6 @@ class Api::V1::FlashcardsController < ApplicationController
 
   private
     def flashcard_params
-      params.require(:flashcard).permit(:front_text, :back_text)
+      params.require(:flashcard).permit(:front_text, :back_text, :front_photo, :back_photo)
     end
 end

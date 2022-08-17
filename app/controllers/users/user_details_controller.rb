@@ -44,7 +44,7 @@ class Users::UserDetailsController < ApplicationController
 
   private
     def user_param
-      params.require(:user).permit(:name, :teacher_id, :role)
+      params.require(:user).permit(:name, :teacher_id, :role, :profile_photo)
     end
     def user_id
       params.fetch(:user, {}).permit(:user_id)
