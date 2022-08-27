@@ -15,23 +15,18 @@ class Users::SessionsController < Devise::SessionsController
     else
       current_user.update(logged_in: false)
     end
-
     super
-
   end
 
 
 private
 
   def respond_with(resource, _opts = {})
-
     response.set_header('Hej', 'Mati')
-    render json: {message: 'Logged.'}, status: :ok
-    #render json: current_user, status: :ok
+    render json: {user: current_user, message: 'Logged.'}, status: :ok
   end
 
   def respond_to_on_destroy
-
     !current_user ? log_out_success : log_out_failure
   end
 

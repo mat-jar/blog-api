@@ -16,4 +16,8 @@ class ApplicationController < ActionController::API
      render status: :unprocessable_entity #422
    end
 
+   rescue_from JWT::ExpiredSignature do |_exception|
+       render status: :unauthorized # 401 unauthenticated
+    end
+
  end
