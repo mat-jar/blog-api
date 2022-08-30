@@ -1,10 +1,21 @@
 class Api::V1::FlashcardsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:shared_flashcards]
 
   def index
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
     @flashcards = @flashcard_set.flashcards.all()
     @flashcard_set_settings_panel = @flashcard_set.flashcard_set_settings_panels.where(user_id: current_user.id)
+    render json: {flashcards: @flashcards, flashcard_set_settings_panel: @flashcard_set_settings_panel}, status: :ok
+  end
+
+  def shared_flashcards
+    @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
+    @flashcards = @flashcard_set.flashcards.all()
+    if current_user
+      @flashcard_set_settings_panel = @flashcard_set.flashcard_set_settings_panels.where(user_id: current_user.id)
+    else
+      @flashcard_set_settings_panel = nil
+    end
     render json: {flashcards: @flashcards, flashcard_set_settings_panel: @flashcard_set_settings_panel}, status: :ok
   end
 

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
         resources :flashcard_sets do
           post 'show_accessible', on: :collection
           post 'show_shared', on: :collection
+          get 'shared_flashcards', to: 'flashcards#shared_flashcards'
         end
       end
     end
