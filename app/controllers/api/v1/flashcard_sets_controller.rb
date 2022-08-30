@@ -77,7 +77,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
       end
 
       def search_flashcard_set_params
-        params.fetch(:flashcard_set, {}).permit(:user_id, :title, :description, :category)
+        params.fetch(:flashcard_set, {}).permit(:user_id, :title, :description, :category, :search_phrase)
       end
 
       def id_with_wrong_title?

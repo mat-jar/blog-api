@@ -20,15 +20,21 @@ class SearchFlashcardSets < ApplicationService
       end
 
       if options[:title]
-        @resources = resources.where(title: options[:title])
+        @resources = resources.where("lower(title) LIKE ?", "%#{options[:title].downcase}%")
       end
 
       if options[:description]
-        @resources = resources.where(description: options[:description])
+        @resources = resources.where("lower(description) LIKE ?", "%#{options[:description].downcase}%")
       end
 
       if options[:category]
-        @resources = resources.where(category: options[:category])
+        @resources = resources.where("lower(category) LIKE ?", "%#{options[:category].downcase}%")
+      end
+
+      if options[:search_phrase]
+        @resources = (resources.where("lower(title) LIKE ?", "%#{options[:search_phrase].downcase}%"))
+        .or(resources.where("lower(description) LIKE ?", "%#{options[:search_phrase].downcase}%"))
+        .or(resources.where("lower(category) LIKE ?", "%#{options[:search_phrase].downcase}%"))
       end
 
       resources
