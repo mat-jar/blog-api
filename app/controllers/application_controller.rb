@@ -17,7 +17,11 @@ class ApplicationController < ActionController::API
    end
 
    rescue_from JWT::ExpiredSignature do |_exception|
-       render status: :unauthorized # 401 unauthenticated
-    end
+     render status: :unauthorized # 401 unauthenticated
+   end
+
+   rescue_from JWT::VerificationError do |_exception|
+     render json: { message: "Authorization token is invalid"}, status: :unauthorized # 401 unauthenticated
+   end
 
  end

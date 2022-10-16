@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :learning_sessions
   has_many :answer_times, through: :learning_sessions
   has_many :students, class_name: "User", foreign_key: "teacher_id"
+  has_many :teacher_tokens
   belongs_to :teacher, class_name: "User", optional: true
   validate :is_teacher_and_student
 

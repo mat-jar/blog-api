@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_002108) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -128,6 +128,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_002108) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "teacher_tokens", force: :cascade do |t|
+    t.string "token"
+    t.bigint "teacher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_teacher_tokens_on_teacher_id"
+    t.index ["token"], name: "index_teacher_tokens_on_token", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -158,5 +167,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_002108) do
   add_foreign_key "flashcards", "flashcard_sets"
   add_foreign_key "learning_sessions", "flashcard_sets"
   add_foreign_key "learning_sessions", "users"
+  add_foreign_key "teacher_tokens", "users", column: "teacher_id"
   add_foreign_key "users", "users", column: "teacher_id"
 end
