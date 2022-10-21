@@ -42,6 +42,9 @@ gem 'devise-jwt'
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'cancancan'
 gem 'simplecov', require: false, group: :test
+gem 'nokogiri'
+gem 'httparty'
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -45,6 +45,12 @@ Rails.application.routes.draw do
         end
       end
 
+      namespace :api do
+          namespace :v1 do
+            post 'sentences', to: 'sentences#show'
+          end
+        end
+
   namespace :api do
       namespace :v1 do
         resources :flashcard_sets do
