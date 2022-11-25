@@ -5,7 +5,7 @@ RSpec.describe AnswerTime, type: :model do
     let!(:new_user) { FactoryBot.create(:user) }
     let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
     let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set.id) }
-    let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user.id) }
+    let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user.id) }
 
     subject { AnswerTime.new( learning_session_id: new_learning_session.id,
                               flashcard_id: new_flashcard.id,

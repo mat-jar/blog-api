@@ -8,7 +8,7 @@ RSpec.describe 'LearningSessions', type: :request do
       include_context "sign_up_and_sign_in_user"
 
       let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
-      let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user.id) }
+      let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user.id) }
 
       before do
 
@@ -27,7 +27,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       let!(:new_user2) { FactoryBot.create(:user)}
       let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user2.id) }
-      let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user2.id) }
+      let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user2.id) }
 
       before do
 

@@ -9,7 +9,7 @@ RSpec.describe 'LearningSessions', type: :request do
 
       let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
       let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
-      let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_student.id) }
+      let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_student.id) }
 
 
       before do
@@ -32,8 +32,8 @@ RSpec.describe 'LearningSessions', type: :request do
       let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
       let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :personal) }
       let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :shared) }
-      let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_student.id) }
-      let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_student.id) }
+      let!(:new_learning_session1) { new_flashcard_set1.learning_sessions.create(user_id: new_student.id) }
+      let!(:new_learning_session2) { new_flashcard_set2.learning_sessions.create(user_id: new_student.id) }
 
 
       before do
@@ -54,7 +54,7 @@ RSpec.describe 'LearningSessions', type: :request do
       let!(:new_teacher2) { FactoryBot.create(:user, role: :teacher)}
       let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher2.id) }
       let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
-      let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_student.id) }
+      let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_student.id) }
 
       before do
 
@@ -73,9 +73,9 @@ RSpec.describe 'LearningSessions', type: :request do
       let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :personal) }
       let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
       let!(:new_flashcard_set3) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :shared) }
-      let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_student.id) }
-      let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_student.id) }
-      let!(:new_learning_session3) { LearningSession.create(flashcard_set_id: new_flashcard_set3.id, user_id: new_student.id) }
+      let!(:new_learning_session1) { new_flashcard_set1.learning_sessions.create(user_id: new_student.id) }
+      let!(:new_learning_session2) { new_flashcard_set2.learning_sessions.create(user_id: new_student.id) }
+      let!(:new_learning_session3) { new_flashcard_set3.learning_sessions.create(user_id: new_student.id) }
 
       before do
 
@@ -96,9 +96,9 @@ RSpec.describe 'LearningSessions', type: :request do
         let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_student2.id, access: :personal) }
         let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_student2.id, access: :class) }
         let!(:new_flashcard_set3) { FactoryBot.create(:flashcard_set, user_id: new_student2.id, access: :shared) }
-        let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_student2.id) }
-        let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_student2.id) }
-        let!(:new_learning_session3) { LearningSession.create(flashcard_set_id: new_flashcard_set3.id, user_id: new_student2.id) }
+        let!(:new_learning_session1) { new_flashcard_set1.learning_sessions.create(user_id: new_student2.id) }
+        let!(:new_learning_session2) { new_flashcard_set2.learning_sessions.create(user_id: new_student2.id) }
+        let!(:new_learning_session3) { new_flashcard_set3.learning_sessions.create(user_id: new_student2.id) }
 
       before do
 
@@ -117,9 +117,9 @@ RSpec.describe 'LearningSessions', type: :request do
         let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_user.id, access: :personal) }
         let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_user.id, access: :class) }
         let!(:new_flashcard_set3) { FactoryBot.create(:flashcard_set, user_id: new_user.id, access: :shared) }
-        let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_user.id) }
-        let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_user.id) }
-        let!(:new_learning_session3) { LearningSession.create(flashcard_set_id: new_flashcard_set3.id, user_id: new_user.id) }
+        let!(:new_learning_session1) { new_flashcard_set1.learning_sessions.create(user_id: new_user.id) }
+        let!(:new_learning_session2) { new_flashcard_set2.learning_sessions.create(user_id: new_user.id) }
+        let!(:new_learning_session3) { new_flashcard_set3.learning_sessions.create(user_id: new_user.id) }
 
       before do
 
@@ -139,8 +139,8 @@ RSpec.describe 'LearningSessions', type: :request do
       let!(:new_student) { FactoryBot.create(:user, teacher_id: new_teacher.id) }
       let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
       let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_student.id, access: :class) }
-      let!(:new_learning_session1) { LearningSession.create(flashcard_set_id: new_flashcard_set1.id, user_id: new_student.id) }
-      let!(:new_learning_session2) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_student.id) }
+      let!(:new_learning_session1) { new_flashcard_set1.learning_sessions.create(user_id: new_student.id) }
+      let!(:new_learning_session2) { new_flashcard_set2.learning_sessions.create(user_id: new_student.id) }
 
       before do
 

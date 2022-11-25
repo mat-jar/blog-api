@@ -7,7 +7,7 @@ RSpec.describe 'AnswerTimes', type: :request do
     include_context "sign_up_and_sign_in_user"
     let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
     let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set.id) }
-    let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user.id) }
+    let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user.id) }
     let!(:new_answer_time) { FactoryBot.build(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id) }
 
       before do
@@ -61,7 +61,7 @@ RSpec.describe 'AnswerTimes', type: :request do
         let!(:new_user) { FactoryBot.create(:user)}
         let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
         let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set.id) }
-        let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user.id) }
+        let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user.id) }
         let!(:new_answer_time) { FactoryBot.build(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id) }
 
 
@@ -87,7 +87,7 @@ RSpec.describe 'AnswerTimes', type: :request do
     let!(:new_flashcard_set1) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
     let!(:new_flashcard_set2) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
     let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set1.id) }
-    let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set2.id, user_id: new_user.id) }
+    let!(:new_learning_session) { new_flashcard_set2.learning_sessions.create(user_id: new_user.id) }
     let!(:new_answer_time) { FactoryBot.build(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id) }
 
       before do

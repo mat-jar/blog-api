@@ -10,13 +10,16 @@ RSpec.describe 'LearningSessions', type: :request do
       before do
         post '/api/v1/learning_sessions', params:
                         { learning_session: {
-                          flashcard_set_id: new_flashcard_set.id,
-                          user_id: new_user.id
+                          flashcard_set_id: new_flashcard_set.id
                         } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
       end
 
       it 'returns the flashcard_set_id' do
-        expect(json['flashcard_set_id']).to eq(new_flashcard_set.id)
+        expect(json['learnable_id']).to eq(new_flashcard_set.id)
+      end
+
+      it 'returns the learnable_type' do
+        expect(json['learnable_type']).to eq(new_flashcard_set.class.name)
       end
 
       it 'returns the user_id' do
@@ -34,8 +37,7 @@ RSpec.describe 'LearningSessions', type: :request do
     before do
       post '/api/v1/learning_sessions', params:
                       { learning_session: {
-                        flashcard_set_id: "",
-                        user_id: ""
+                        flashcard_set_id: ""
                       } }, headers: { Authorization:  "Bearer " + request.env["warden-jwt_auth.token"]}
     end
       it 'returns an unprocessable entity status' do
@@ -50,8 +52,7 @@ RSpec.describe 'LearningSessions', type: :request do
         before do
           post '/api/v1/learning_sessions', params:
                           { learning_session: {
-                            flashcard_set_id: new_flashcard_set.id,
-                            user_id: new_user.id
+                            flashcard_set_id: new_flashcard_set
                           } }
         end
         it 'returns a demand to log in or sign up' do

@@ -5,7 +5,7 @@ RSpec.describe 'AnswerTimes', type: :request do
     include_context "sign_up_and_sign_in_user"
     let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
     let!(:new_flashcard) { FactoryBot.create(:flashcard, flashcard_set_id: new_flashcard_set.id) }
-    let!(:new_learning_session) { LearningSession.create(flashcard_set_id: new_flashcard_set.id, user_id: new_user.id) }
+    let!(:new_learning_session) { new_flashcard_set.learning_sessions.create(user_id: new_user.id) }
     let!(:new_answer_time1) { FactoryBot.create(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id, time_millisecond: 1000) }
     let!(:new_answer_time2) { FactoryBot.create(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id, time_millisecond: 3000) }
     let!(:new_answer_time3) { FactoryBot.create(:answer_time, flashcard_id: new_flashcard.id, learning_session_id: new_learning_session.id, time_millisecond: 8000) }
