@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_22_142115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "read"
+  end
+
+  create_table "english_sentences", force: :cascade do |t|
+    t.string "sentence"
+    t.string "key_word"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "flashcard_set_settings_panels", force: :cascade do |t|
@@ -115,10 +122,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
 
   create_table "learning_sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "flashcard_set_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["flashcard_set_id"], name: "index_learning_sessions_on_flashcard_set_id"
+    t.string "learnable_type"
+    t.bigint "learnable_id"
+    t.index ["learnable_type", "learnable_id"], name: "index_learning_sessions_on_learnable"
     t.index ["user_id"], name: "index_learning_sessions_on_user_id"
   end
 
@@ -135,6 +143,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_teacher_tokens_on_teacher_id"
     t.index ["token"], name: "index_teacher_tokens_on_token", unique: true
+  end
+
+  create_table "user_sentence_sets", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "category"
+    t.integer "access", default: 1
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_sentence_sets_on_user_id"
+  end
+
+  create_table "user_sentences", force: :cascade do |t|
+    t.string "sentence"
+    t.string "key_word"
+    t.string "hint"
+    t.string "comment"
+    t.bigint "user_sentence_set_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_sentence_set_id"], name: "index_user_sentences_on_user_sentence_set_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -165,8 +195,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_103502) do
   add_foreign_key "flashcard_set_settings_panels", "users"
   add_foreign_key "flashcard_sets", "users"
   add_foreign_key "flashcards", "flashcard_sets"
-  add_foreign_key "learning_sessions", "flashcard_sets"
   add_foreign_key "learning_sessions", "users"
   add_foreign_key "teacher_tokens", "users", column: "teacher_id"
+  add_foreign_key "user_sentence_sets", "users"
+  add_foreign_key "user_sentences", "user_sentence_sets"
   add_foreign_key "users", "users", column: "teacher_id"
 end
