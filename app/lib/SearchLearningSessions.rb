@@ -20,7 +20,7 @@ class SearchLearningSessions < ApplicationService
       end
 
       if options[:flashcard_set_id]
-        @resources = resources.where(flashcard_set_id: options[:flashcard_set_id])
+        @resources = resources.where(learnable_id: options[:flashcard_set_id])
       end
 
       resources

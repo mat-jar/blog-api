@@ -1,6 +1,6 @@
 class LearningSession < ApplicationRecord
   belongs_to :user
-  belongs_to :flashcard_set
+  belongs_to :learnable, :polymorphic => true
   has_many :answer_times
-  validates :flashcard_set, :user, presence: true
+  validates :learnable, :user, presence: true
 end

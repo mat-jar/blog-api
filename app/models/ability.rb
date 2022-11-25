@@ -5,22 +5,24 @@ class Ability
 
   def initialize(user)
 
-    can [:show_shared, :show_accessible], FlashcardSet, {access: :shared}
-    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet], user_id: user.id
-    can :manage, FlashcardSet, user_id: user.id
+    can [:show_shared, :show_accessible], [FlashcardSet, UserSentenceSet], {access: :shared}
+    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet, UserSentenceSet], user_id: user.id
+    can :manage, [FlashcardSet, UserSentenceSet], user_id: user.id
     can :manage, Flashcard, flashcard_set: {user_id: user.id}
+    can :manage, UserSentence, user_sentence_set: {user_id: user.id}
     can [:show, :update], User, id: user.id
 
     if user.teacher
-      can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.teacher.id}
+      can [:show_specific, :show_accessible], [FlashcardSet, UserSentenceSet], {access: :class, user_id: user.teacher.id}
     end
 
     return unless (user.teacher? || user.admin?)
-    can [:show_specific, :show_accessible], LearningSession, {user_id: user.students.ids, flashcard_set: {access: :class}}
-    can [:show_specific, :show_accessible], FlashcardSet, {access: :class, user_id: user.students.ids}
+    can [:show_specific, :show_accessible], LearningSession, {user_id: user.students.ids, learnable_type: 'FlashcardSet', learnable_id: FlashcardSet.class.pluck(:id)}
+    can [:show_specific, :show_accessible], LearningSession, {user_id: user.students.ids, learnable_type: 'UserSentenceSet', learnable_id: UserSentenceSet.class.pluck(:id)}
+    can [:show_specific, :show_accessible], [FlashcardSet, UserSentenceSet], {access: :class, user_id: user.students.ids}
 
     return unless user.admin?
-    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet]
+    can [:show_specific, :show_accessible, :index], [LearningSession, FlashcardSet, UserSentenceSet]
     can [:show, :show_all, :update], User
 
     # Define abilities for the passed in user here. For example:
