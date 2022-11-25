@@ -44,6 +44,8 @@ gem 'cancancan'
 gem 'simplecov', require: false, group: :test
 gem 'nokogiri'
 gem 'httparty'
+gem 'selenium-webdriver'
+
 
 
 group :development, :test do
