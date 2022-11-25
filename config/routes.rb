@@ -24,6 +24,11 @@ Rails.application.routes.draw do
           post 'show_shared', on: :collection
           get 'shared_flashcards', to: 'flashcards#shared_flashcards'
         end
+        resources :user_sentence_sets do
+          post 'show_accessible', on: :collection
+          post 'show_shared', on: :collection
+          get 'shared_user_sentences', to: 'user_sentences#shared_user_sentences'
+        end
       end
     end
 
@@ -45,16 +50,26 @@ Rails.application.routes.draw do
         end
       end
 
-      namespace :api do
-          namespace :v1 do
-            post 'sentences', to: 'sentences#show'
+        namespace :api do
+            namespace :v1 do
+              post 'english_sentences', to: 'english_sentences#show'
+              post 'english_sentences/translate', to: 'english_sentences#translate'
+              post 'english_sentences/random', to: 'english_sentences#random'
+            end
           end
-        end
 
   namespace :api do
       namespace :v1 do
         resources :flashcard_sets do
           resources :flashcards, shallow: true
+        end
+      end
+  end
+
+  namespace :api do
+      namespace :v1 do
+        resources :user_sentence_sets do
+          resources :user_sentences, shallow: true
         end
       end
   end
