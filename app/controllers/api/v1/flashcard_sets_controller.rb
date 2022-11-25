@@ -73,11 +73,11 @@ class Api::V1::FlashcardSetsController < ApplicationController
       end
 
       def flashcard_set_params
-        params.require(:flashcard_set).permit(:title, :description, :category)
+        params.require(:flashcard_set).permit(:title, :description, :category, :access)
       end
 
       def search_flashcard_set_params
-        params.fetch(:flashcard_set, {}).permit(:user_id, :title, :description, :category, :search_phrase)
+        params.fetch(:flashcard_set, {}).permit(:user_id, :title, :description, :category, :search_phrase, :access)
       end
 
       def id_with_wrong_title?

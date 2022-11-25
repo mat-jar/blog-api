@@ -27,7 +27,11 @@ class Api::V1::LearningSessionsController < ApplicationController
   end
 
   def create
-    @learning_session = LearningSession.new(learning_session_param)
+    if learning_session_param.values_at("flashcard_set_id").join.empty?
+      render status: :unprocessable_entity
+      return
+    end
+    @learning_session = FlashcardSet.find(learning_session_param[:flashcard_set_id]).learning_sessions.new
     @learning_session.user = current_user
 
     if @learning_session.save
@@ -40,7 +44,7 @@ class Api::V1::LearningSessionsController < ApplicationController
   private
 
     def learning_session_param
-      params.require(:learning_session).permit(:flashcard_set_id, :user_id)
+      params.require(:learning_session).permit(:flashcard_set_id)
     end
 
     def search_learning_session_param
