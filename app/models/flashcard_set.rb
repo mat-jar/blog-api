@@ -8,9 +8,13 @@ class FlashcardSet < ApplicationRecord
   has_many :learning_sessions, as: :learnable
   has_many :answer_times, through: :learning_sessions
 
-  def to_param
+  def slug
     return nil unless persisted?
     "#{id}-#{title.parameterize}" # 12-human-body
+  end
+
+  def as_json(options={})
+    super(:methods => ['slug'])
   end
 
 end

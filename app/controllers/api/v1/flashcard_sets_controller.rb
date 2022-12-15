@@ -1,5 +1,5 @@
 class Api::V1::FlashcardSetsController < ApplicationController
-  before_action :set_flashcard_set
+  before_action :set_flashcard_set, except: [:show_shared]
   before_action :authenticate_user!, except: [:show_shared]
 
   #before_action :authenticate_user!
@@ -82,7 +82,7 @@ class Api::V1::FlashcardSetsController < ApplicationController
 
       def id_with_wrong_title?
         (params[:id].sub(@flashcard_set.id.to_s, '') != '') &&
-        (@flashcard_set.to_param != params[:id])
+        (@flashcard_set.slug != params[:id])
       end
 
 end

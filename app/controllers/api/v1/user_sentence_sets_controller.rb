@@ -75,6 +75,6 @@ class Api::V1::UserSentenceSetsController < ApplicationController
 
       def id_with_wrong_title?
         (params[:id].sub(@user_sentence_set.id.to_s, '') != '') &&
-        (@user_sentence_set.to_param != params[:id])
+        (@user_sentence_set.slug != params[:id])
       end
 end
