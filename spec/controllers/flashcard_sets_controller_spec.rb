@@ -2,10 +2,10 @@ require "rails_helper"
 
 RSpec.describe Api::V1::FlashcardSetsController, type: :controller do
   describe 'GET#show' do
-    context 'given a slug to an existing course' do
+    context 'given a slug to an existing set' do
       let!(:new_user) { FactoryBot.create(:user) }
       let!(:new_flashcard_set) { FactoryBot.create(:flashcard_set, user_id: new_user.id) }
-      it 'renders the show view' do
+      it 'renders the show method' do
         slug = "#{new_flashcard_set.id}-#{new_flashcard_set.title.parameterize}"
 
         sign_in new_user
