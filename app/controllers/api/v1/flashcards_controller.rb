@@ -10,12 +10,9 @@ class Api::V1::FlashcardsController < ApplicationController
 
   def shared_flashcards
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
+    render json: { message: "Not authorized to see this set"}, status: :forbidden and return if !@flashcard_set.shared?
     @flashcards = @flashcard_set.flashcards.all()
-    if current_user
-      @flashcard_set_settings_panel = @flashcard_set.flashcard_set_settings_panels.where(user_id: current_user.id)
-    else
-      @flashcard_set_settings_panel = nil
-    end
+    @flashcard_set_settings_panel = nil
     render json: {flashcards: @flashcards, flashcard_set: @flashcard_set, flashcard_set_settings_panel: @flashcard_set_settings_panel}, status: :ok
   end
 
