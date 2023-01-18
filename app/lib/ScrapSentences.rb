@@ -2,6 +2,7 @@ require "httparty"
 require "nokogiri"
 
 class ScrapSentences < ApplicationService
+
   def call
     sentences = scrap_mw + scrap_mac + scrap_coll + scrap_long + scrap_brit + scrap_ox + scrap_free
     sentences.uniq
@@ -16,99 +17,66 @@ class ScrapSentences < ApplicationService
     @options = options
   end
 
-  def scrap_mw
+  def is_sentence?(text)
+    /\A[[:upper:]]/.match?(text) #string starts with capital letter
+  end
+
+  def scrap_dictionary(url, xpath)
     sentences = []
-    url = "https://www.merriam-webster.com/dictionary/#{@word}"
     response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//div[contains(@class, 'in-sentences')]/span[contains(@class, 'ex-sent')]").each do |span|
-      sentences.push(span.text.strip) if /\A[[:upper:]]/.match(span.text.strip)
+    page_body = Nokogiri::HTML(response.body)
+    page_body.xpath(xpath).each do |element|
+      text = element.text
+      text.gsub("\u00A0", " ") #replace &nbsp with standard space;
+      text.strip! #remove leading and trailing whitespace
+      text.slice!(/\(.*\)/) #remove parentheses with text inside
+      text.slice!(/\[.*\]/) #remove brackets with text inside
+      #sentence = sentence.gsub(/\"/, "")
+      sentences.push(text) if is_sentence?(text)
     end
-    sentences
+   sentences
+  end
+
+  def scrap_mw
+    url = "https://www.merriam-webster.com/dictionary/#{@word}"
+    xpath = "//div[contains(@class, 'in-sentences')]/span[contains(@class, 'ex-sent')]"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_mac
-    sentences = []
     url = "https://www.macmillandictionary.com/dictionary/british/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//p[@class='EXAMPLE']").each do |span|
-      sentences.push(span.text.strip) if /\A[[:upper:]]/.match(span.text.strip)
-    end
-    sentences
+    xpath = "//p[@class='EXAMPLE']"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_coll
-    sentences = []
     url = "https://www.collinsdictionary.com/dictionary/english/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//span[@class='quote']").each do |span|
-      sentences.push(span.text.strip) if /\A[[:upper:]]/.match(span.text.strip)
-    end
-    sentences
+    xpath = "//span[@class='quote']"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_long
-    sentences = []
     url = "https://www.ldoceonline.com/dictionary/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//span[@class='EXAMPLE']").each do |span|
-      sentence = span.text.strip
-      sentence.slice!(160.chr('UTF-8'))
-      sentences.push(sentence) if /\A[[:upper:]]/.match(sentence)
-    end
-    sentences
+    xpath = "//span[@class='EXAMPLE']"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_brit
-    sentences = []
     url = "https://www.britannica.com/dictionary/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//div[@class='vi_content']").each do |span|
-      sentence = span.text
-      sentence.slice!(/\[.*\]/)
-      sentence = sentence.strip
-      sentences.push(sentence) if /\A[[:upper:]]/.match(sentence)
-    end
-    sentences
+    xpath = "//div[@class='vi_content']"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_ox
-    sentences = []
     url = "https://www.oxfordlearnersdictionaries.com/definition/english/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//span[@class='x']").each do |span|
-      sentence = span.text
-      sentence.slice!(/\(.*\)/)
-      sentences.push(sentence) if /\A[[:upper:]]/.match(sentence)
-    end
-    sentences
+    xpath = "//span[@class='x']"
+    scrap_dictionary(url, xpath)
   end
 
   def scrap_free
-    sentences = []
     url = "https://www.thefreedictionary.com/#{@word}"
-    response = HTTParty.get(url)
-    html = response
-    doc = Nokogiri::HTML(html.body)
-    doc.xpath("//span[@class='illustration']").each do |span|
-      sentence = span.text
-      sentence.slice!(/\(.*\)/)
-      sentence = sentence.gsub(/\"/, "")
-      sentence = sentence.strip
-      sentences.push(sentence) if /\A[[:upper:]]/.match(sentence)
-    end
-    sentences
+    xpath = "//span[@class='illustration']"
+    scrap_dictionary(url, xpath)
   end
 
 end
