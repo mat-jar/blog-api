@@ -19,6 +19,11 @@ class Api::V1::FlashcardsController < ApplicationController
   def create
     @flashcard_set = FlashcardSet.find(params[:flashcard_set_id])
     @flashcard = @flashcard_set.flashcards.new(flashcard_params)
+
+    if flashcard_params[:front_photo]
+      @flashcard.front_photo = flashcard_params[:front_photo].original_filename
+    end
+    
     if @flashcard.save
       render json: @flashcard, status: :ok
     else
